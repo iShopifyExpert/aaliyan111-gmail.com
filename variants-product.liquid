@@ -1,0 +1,53 @@
+{%assign showcolors = false%}
+{% for morecolors in product.tags %}{% if morecolors contains 'products/' %}{%assign showcolors = true%}{% endif %}{% endfor %}{% if showcolors %}
+<div class="select-container">
+    <label class="label">Colors</label>
+    <div class="swatch-color first"><a href="#" class="active" data-title="{{product.title}}" data-price="{{product.price | money}}" data-id="{{product.selected_or_first_available_variant.id}}" data-image="{{product.featured_image | img_url: 'master'}}"><img src="{{product.featured_image | img_url: 'small', crop:'center'}}" alt="{{product.title}}"></a></div>
+    {% for morecolors in product.tags %}{% if morecolors contains 'products/' %}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               {% assign morecolor = morecolors | remove: 'products/' %}{% assign c = all_products[morecolor] %}                                                                                                                                                                                                            
+    <div class="swatch-color"><a href="#"{% if c.handle == product.handle %} class="active"{% endif %} data-title="{{c.title}}" data-price="{{c.price | money}}" data-id="{{c.selected_or_first_available_variant.id}}" data-image="{{c.featured_image | img_url: 'master'}}"><img src="{{c.featured_image | img_url: 'small', crop:'center'}}" alt="{{c.title}}"></a></div>
+    {% endif %}{% endfor %}
+</div>
+{% endif %}
+
+<script>
+ //eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('$(i).f(\'m\',\'.d-3 .5-9 a\',l(e){e.k();$(\'.d-3 .5-9 a\').j(\'7\');$(0).h(\'7\');$(\'.g-b-n z[A="2"]\').C($(0).1(\'2\')).c(\'o\',$(0).1(\'2\'));$(\'.y .x B\').4($(0).1(\'w\'));$(\'.v.8\').4($(0).1(\'8\'));$(\'.b-q\').p().r(\'s\').c({u:$(0).1(\'6\'),t:$(0).1(\'6\')})});',39,39,'this|data|id|container|text|swatch|image|active|title|color||product|attr|select||on|shopify|addClass|document|removeClass|preventDefault|function|click|form|value|first|gallery__image|find|img|srcset|src|product_name|price|current_price|modal_price|input|name|span|val'.split('|'),0,{}))
+ $(document).on('click', '.select-container .swatch-color a', function(e) {
+   e.preventDefault();
+   $('.select-container .swatch-color a').removeClass('active');
+   $(this).addClass('active');
+   $('.shopify-product-form input[name="id"]').val($(this).data('id')).attr('value', $(this).data('id'));
+   $('.modal_price .current_price span').text($(this).data('price'));
+   $('.product_name.title').text($(this).data('title'));
+   $('.product-gallery__image').first().find('a.product-gallery__link').attr('href', $(this).data('image'));
+   $('.product-gallery__image').first().find('img').attr({src: $(this).data('image'), srcset: $(this).data('image')});
+ });
+</script>
+
+<style>
+/* collection-crystal dream */
+.collection .thumbnail-overlay__container {
+    background-color: transparent;
+}
+.select-container {
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 10px;
+}
+.select-container .swatch-color {
+    display: block;
+    width: 100px;
+    float: left;
+    margin: 0 6px;
+}
+.select-container .swatch-color a {
+    display: block;
+    border: 1px solid #ddd;
+    padding: 6px;
+}
+.select-container .swatch-color.first {
+    margin: 0 6px 0 0;
+}
+.select-container .swatch-color a:hover, .select-container .swatch-color a.active {
+    border: 1px solid #000;
+}
+</style>
